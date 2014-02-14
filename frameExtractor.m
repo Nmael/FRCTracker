@@ -2,7 +2,7 @@ clear all
 clc
 
 fprintf('Read frame numbers in lower-right corner of video window.\r\n');
-%filename = 'Videos/Galileo Division - Semi Finals 1 Match 3.mp4';
+%filename = '../Videos/Galileo Division - Semi Finals 1 Match 3.mp4';
 [filename, pathname, filterIdx] = uigetfile('*.*', 'Select video file');
 filename = [pathname '/' filename];
 implay(filename);
