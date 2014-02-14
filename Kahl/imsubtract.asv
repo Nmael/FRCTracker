@@ -15,9 +15,10 @@ end
 %f = 26; % Test Frame
 w = 2; % Subtraction Width
 
-centroids = [];
+centroid_r = zeros(numel(Images), 1);
+centroid_c = zeros(numel(Images), 1);
 
-for f = (1 + w):(numel(Images) - w) % frame
+for f = (1 + w):(numel(Images) - w)
 
     %imtool(Images(f).img);
     %imtool(abs(Images(f + w).img - Images(f - w).img));
@@ -45,15 +46,19 @@ for f = (1 + w):(numel(Images) - w) % frame
     [r1, c1, r2, c2, boxed_Image] = bounding_box(connected_mask, Images(f));
     % imtool(boxed_Image.img);
     
-    for a = 1:numel(r1)
-        centroids = [centroids; (r1(a)+r2(a))/2  (c1(a)+c2(a))/2  f];
-    end
+    centroid_r(f) = (r1+r2)/2;
+    centroid_c(f) = (c1+c2)/2;
     
     imwrite(boxed_Image.img, ['boxed/' , int2str(f), '.jpg']);
     
 end
 
-save('centroids.mat', 'centroids');
+centroid_r(1:w) = centroid_r(w+1);
+centroid_c(1:w) = centroid_c(w+1);
+centroid_r(end-w+1:end) = centroid_r(end-w);
+centroid_c(end-w+1:end) = centroid_c(end-w);
+
+w
 
 
 
