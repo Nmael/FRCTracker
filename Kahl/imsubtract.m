@@ -33,7 +33,7 @@ for f = (1 + w):(numel(Images) - w) % frame
     q = imclose(mask, strel('disk', 2));
     %imtool(q);
     %q = mask;
-    cleaned_mask = clean_mask(q);
+    cleaned_mask = clean_mask_imsubtract(q);
     % imtool(cleaned_mask);
 
     % opened_mask = imopen(mask, strel('disk', 2));
@@ -49,7 +49,7 @@ for f = (1 + w):(numel(Images) - w) % frame
         centroids = [centroids; (r1(a)+r2(a))/2  (c1(a)+c2(a))/2  f];
     end
     
-    imwrite(boxed_Image.img, ['boxed/' , int2str(f), '.jpg']);
+    imwrite(boxed_Image.img, ['boxed/' , int2str(f), '.png']);
     
 end
 

@@ -2,8 +2,8 @@ clear all; clc; imtool close all;
 
 rowSize = 300;
 
-img = imread('boxed/42.jpg');
-img = imresize(img, rowSize/size(img,1));
+img = imread('boxed/42.png');
+%img = imresize(img, rowSize/size(img,1));
 imtool(img);
 
 R = double(img(:,:,1));
@@ -16,15 +16,15 @@ L = normalize(R + G + B);
 S = normalize(R - B);
 T = normalize(R - 2*G + B);
 
-red_mask0 = S > 0.70 & L > 0.20 & T > 0.55;
-blu_mask0 = S < 0.40 & L > 0.20;
-red_mask1 = clean_mask(red_mask0);
-blu_mask1 = clean_mask(blu_mask0);
+red_mask0 = S > 0.50 & L > 0.20 & L < 0.40 & T > 0.40;
+blu_mask0 = S < 0.30 & L > 0.20 & L < 0.40;
+red_mask1 = clean_mask_hough(red_mask0);
+blu_mask1 = clean_mask_hough(blu_mask0);
 red_mask2 = imclose(red_mask1, strel('disk',3));
 blu_mask2 = imclose(blu_mask1, strel('disk',3));
 
-E_red2 = edge(red_mask2, 'canny');
-E_blu2 = edge(blu_mask2, 'canny');
+E_red2 = edge(red_mask2, 'sobel');
+E_blu2 = edge(blu_mask2, 'sobel');
 
 figure(1);
 subplot(2,2,1); imshow(E_red2);
