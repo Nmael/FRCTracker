@@ -8,18 +8,17 @@ b = dimg(:,:,3);
 l = r + g + b;
 s = r - b;
 t = r - 2*g + b;
-blockSize = 7;
 
-xBlockSize = floor(size(img, 2) / blockSize);
-yBlockSize = floor(size(img, 1) / blockSize);
+xBlockSize = floor(size(img, 2) / 7);
+yBlockSize = floor(size(img, 1) / 7);
 
 featureVector = [];
-for i = 1:yBlockSize:yBlockSize*blockSize %size(img, 1)
+for i = 1:yBlockSize:size(img, 1)
     if i + yBlockSize > size(img, 1) + 1
         break
     end
     
-    for j = 1:xBlockSize:xBlockSize*blockSize %size(img, 2)
+    for j = 1:xBlockSize:size(img, 2)
         if j + xBlockSize > size(img, 2) + 1
             break
         end

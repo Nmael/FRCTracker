@@ -7,9 +7,9 @@ clc
 dirs{1} = 'images/TrainBumpers';
 label{1} = 1;
 class{1} = 0;
-% dirs{2} = 'images/TrainNonbumpers';
-% label{2} = -1;
-% class{2} = 0;
+dirs{2} = 'images/TrainNonbumpers';
+label{2} = -1;
+class{2} = 0;
 % 
 % dirs{3} = 'images/TestBumpers';
 % label{3} = 1;
@@ -44,4 +44,4 @@ for i = 1:size(dirList, 1)
     end
 end
 
-% save('features.mat', 'X', 'Y', 'C', 'F');
+save('features.mat', 'imgList');

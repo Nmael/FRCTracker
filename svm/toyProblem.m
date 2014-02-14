@@ -1,64 +1,93 @@
-% toyProblem.m
-% Written by Matthew Boutell, 2006.
-% Feel free to distribute at will.
-
 clear all;
 clc;
 
-% We fix the seeds so the data sets are reproducible
-seedTrain = 137;
-seedTest = 138;
-% This tougher data set is commented out.
-%[xTrain, yTrain] = GenerateGaussianDataSet(seedTrain);
-%[xTest, yTest] = GenerateGaussianDataSet(seedTest);
+load('features.mat');
+features = [];
+for i = 1:size(imgList, 2)
+    features(i,:) = imgList{i}.fv;
+end
+features = normalizeFeatures01(features);
+for i = 1:size(imgList, 2)
+    imgList{i}.fv = features(i,:);
+end
 
-% This one isn't too bad at all
-[xTrain, yTrain] = GenerateClusteredDataSet(seedTrain);
-[xTest, yTest] = GenerateClusteredDataSet(seedTest);
-
-
-% Add your code here.
-% KNOWN ISSUE: the linear decision boundary doesn't work 
-% for this data set at all. Don't know why...
-net = svm(size(xTrain, 2), 'rbf', [80], 100);
-net = svmtrain(net, xTrain, yTrain);
-
-[detectedClasses, distances] = svmfwd(net, xTest);
-truePositives = 0;
-trueNegatives = 0;
-falsePositives = 0;
-falseNegatives = 0;
-for i = 1:length(yTrain)
-    fprintf('Point %d, True class: %d, detected class: %d, distance: %0.2f\n', i, yTrain(i), detectedClasses(i), distances(i))
-
-    if yTest(i) == detectedClasses(i)
-        if yTrain(i) == 1
-            truePositives = truePositives + 1;
-        else
-            trueNegatives = trueNegatives + 1;
-        end
+trainersX = [];
+trainersY = [];
+testersX = [];
+testersY = [];
+for i = 1:size(imgList, 2)
+    if imgList{i}.class == 0
+        trainersX = cat(1, trainersX, imgList{i}.fv);
+        trainersY = cat(1, trainersY, imgList{i}.label);
     else
-        if yTest(i) == 1
-            falseNegatives = falseNegatives + 1;
-        else
-            falsePositives = falsePositives + 1;
-        end
+        testersX = cat(1,testersX,imgList{i}.fv);
+        testersY = cat(1,testersY,imgList{i}.label);
     end
 end
 
-fprintf('True positives: %d.\n', truePositives);
-fprintf('True negatives: %d.\n', trueNegatives);
-fprintf('False positives: %d.\n', falsePositives);
-fprintf('False negatives: %d.\n', falseNegatives);
-
-tpr = truePositives / (truePositives + falsePositives);
-fpr = falsePositives / (falsePositives + truePositives);
-
-fprintf('True positive rate: %d.\n', tpr);
-fprintf('False positive rate: %d.\n', fpr);
-
-% Run this on a trained network to see the resulting boundary 
-% (as in the demo)
-plotboundary(net, [0,20], [0,20]);
-
-
+net = svm(size(trainersX,2), 'rbf', [1.6], 100);
+R = repmat([0,1],294,1);
+S = [800 1];
+% [y, y1] = svmfwd(net, testersX);
+% trueposarray=[];
+% falseposarray=[];
+% areasvm=0;
+% k = 1;
+% 
+% maxCorrectThreshedY = [0, 0]; % first element is the Y value, second is the testersY index
+% minCorrectThreshedY = [0, 0];
+% maxIncorrectThreshedY = [0, 0];
+% minIncorrectThreshedY = [0, 0];
+% 
+% for threshold = -10:.05:10
+%     rawThreshedY = y1+threshold;
+%     threshedY = rawThreshedY./abs(rawThreshedY);
+%     truepos=0;
+%     trueneg=0;
+%     falsepos=0;
+%     falseneg=0;
+%     for i = 1:size(testersY,1)
+%         if (testersY(i)==1 && threshedY(i)==1)
+%             truepos=truepos+1;
+%             if rawThreshedY(i) > maxCorrectThreshedY
+%                 maxCorrectThreshedY = [rawThreshedY(i), i];
+%             end
+%         elseif (testersY(i)==-1 && threshedY(i)==-1)
+%             trueneg=trueneg+1;
+%             if rawThreshedY(i) < minCorrectThreshedY
+%                 minCorrectThreshedY = [rawThreshedY(i), i];
+%             end
+%         elseif (testersY(i)==-1 && threshedY(i)==1)
+%             falsepos=falsepos+1;
+%             if rawThreshedY(i) > maxIncorrectThreshedY
+%                 maxIncorrectThreshedY = [rawThreshedY(i), i];
+%             end
+%         elseif (testersY(i)==1 && threshedY(i)==-1)
+%             falseneg=falseneg+1;
+%             if rawThreshedY(i) < minIncorrectThreshedY
+%                 minIncorrectThreshedY = [rawThreshedY(i), i];
+%             end
+%         end
+%     end
+%     trueposrate = truepos / (truepos + falseneg);
+%     falseposrate = falsepos / (truepos + falseneg);
+%     trueposarray=cat(1,trueposarray,trueposrate);
+%     falseposarray=cat(1,falseposarray,falseposrate);
+%     if threshold == 0
+%         naturaltruepos = truepos;
+%         naturaltrueneg = trueneg;
+%         naturalfalsepos = falsepos;
+%         naturalfalseneg = falseneg;
+%         naturaltrueposrate = trueposrate;
+%         naturalfalseposrate = falseposrate;
+%     end
+%     if threshold > -10
+%         areasvm=areasvm + (falseposarray(k)-falseposarray(k-1))*trueposarray(k);
+%     end
+% k=k+1;            
+% end
+% 
+% fprintf('Best positive classification: Alpha of %d for file %s.\n', maxCorrectThreshedY(1), F{maxCorrectThreshedY(2)});
+% fprintf('Best negative classification: Alpha of %d for file %s.\n', minCorrectThreshedY(1), F{minCorrectThreshedY(2)});
+% fprintf('Worst positive classification: Alpha of %d for file %s.\n', maxIncorrectThreshedY(1), F{maxIncorrectThreshedY(2)});
+% fprintf('Worst negative classification: Alpha of %d for file %s.\n', minIncorrectThreshedY(1), F{minIncorrectThreshedY(2)});
