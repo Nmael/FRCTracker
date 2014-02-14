@@ -31,4 +31,3 @@ boxed_img(:,:,3) = boxed_img(:,:,3) .* box_mask;
 boxed_Image_Obj = Image(boxed_img);
 
 end
-

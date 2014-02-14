@@ -28,4 +28,3 @@ classdef Image
         end
     end
 end
-

@@ -32,7 +32,4 @@ while converged == 0
     end
 end
 
-
-
 end
-

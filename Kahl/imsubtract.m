@@ -54,7 +54,3 @@ for f = (1 + w):(numel(Images) - w) % frame
 end
 
 save('centroids.mat', 'centroids');
-
-
-
-
