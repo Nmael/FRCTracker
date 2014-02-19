@@ -1,13 +1,10 @@
 clear all
 clc
 
-% Example of reading all the files in a given folder, e.g., TrainSunset. 
-% For the sunset detector, you should keep the images in 4 separate folders: train and test 
-% are separate, and the folder names tell you what the labels are (sunset = +1, non = -1) 
-dirs{1} = 'images/TrainBumpers';
+dirs{1} = 'segmented/robots';
 label{1} = 1;
 class{1} = 0;
-dirs{2} = 'images/TrainNonbumpers';
+dirs{2} = 'segmented/nonrobots';
 label{2} = -1;
 class{2} = 0;
 % 
