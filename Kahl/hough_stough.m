@@ -18,8 +18,8 @@ T = normalize(R - 2*G + B);
 
 red_mask0 = S > 0.70 & L > 0.20 & T > 0.55;
 blu_mask0 = S < 0.40 & L > 0.20;
-red_mask1 = clean_mask(red_mask0);
-blu_mask1 = clean_mask(blu_mask0);
+red_mask1 = clean_mask_hough(red_mask0);
+blu_mask1 = clean_mask_hough(blu_mask0);
 red_mask2 = imclose(red_mask1, strel('disk',3));
 blu_mask2 = imclose(blu_mask1, strel('disk',3));
 

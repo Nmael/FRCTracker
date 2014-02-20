@@ -90,6 +90,8 @@ for threshold = -10:.05:10
 k=k+1;            
 end
 
+fprintf('TPR: %d.\n', trueposrate);
+fprintf('FPR: %d.\n', falseposrate);
 fprintf('Best positive classification: Alpha of %d for file %s.\n', maxCorrectThreshedY(1), imgList{maxCorrectThreshedY(2)}.fileLoc);
 fprintf('Best negative classification: Alpha of %d for file %s.\n', minCorrectThreshedY(1), imgList{minCorrectThreshedY(2)}.fileLoc);
 fprintf('Worst positive classification: Alpha of %d for file %s.\n', maxIncorrectThreshedY(1), imgList{maxIncorrectThreshedY(2)}.fileLoc);

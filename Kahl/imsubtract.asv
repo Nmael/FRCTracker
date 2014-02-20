@@ -43,7 +43,7 @@ for f = (1 + w):(numel(Images) - w) % frame
     % imtool(connected_mask);
 
     [r1, c1, r2, c2, boxed_Image] = bounding_box(connected_mask, Images(f));
-    imtool(boxed_Image.img);
+    % imtool(boxed_Image.img);
     
     for a = 1:numel(r1)
         centroids = [centroids; (r1(a)+r2(a))/2  (c1(a)+c2(a))/2  f];
