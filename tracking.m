@@ -43,8 +43,8 @@ for i = 3:size(T,2)-2
             minDist = 0;
             idx = start;
         end
-        if abs(minDist) > 100
-            xm = xk;
+        if abs(minDist) > 40
+            xm = predicted_tracks(i-1,:,start)';
         else
             xm = [current(idx,1) current(idx,2)]';
         end
@@ -58,7 +58,7 @@ for i = 3:size(T,2)-2
         predicted_tracks(i, :, start) = xk;
     end
 end
-% 
+%
 % figure('units','pixels','Position',[0 0 1024 768]);
 % subplot(2,1,1);
 % plot(T,XM(:,1),T,XK(:,1),T,VK(:,1));
@@ -72,7 +72,7 @@ end
 % Plot the tracks
 figure();
 hold on;
-for i = 2:size(tracks,3)
+for i = 1:size(tracks,3)
     plot(tracks(:,2,i), tracks(:,1,i),'Color', color(i,:), 'Marker', 'x', 'LineStyle', 'none');
 end
 legend('Track 1', 'Track2');
@@ -82,11 +82,15 @@ axis([0 640 0 360]);
 fileList = dir('QF2-1_5160-5240\');
 
 for a = 6:size(fileList,1) - 2
-    filename = ['QF2-1_5160-5240\' num2str(a-2) '.png'];
+    if a-2<10
+        filename = ['QF2-1_5160-5240\0' num2str(a-2) '.png'];
+    else
+        filename = ['QF2-1_5160-5240\' num2str(a-2) '.png'];
+    end
     new_filename = ['filtered_imgs\' num2str(a-2) '.png'];
     img = imread(filename);
     new_img = zeros(size(img,1), size(img,2), size(img,3));
-    for i = 1:2%size(tracks,3) 
+    for i = 1:2%size(tracks,3)
         x_mid = floor(tracks(a,2,i)); y_mid = floor(tracks(a,1,i));
         x = repmat(x_mid-5:x_mid+5, [1 5]);
         y = floor(y_mid-5:1/5:y_mid+5);
@@ -95,7 +99,7 @@ for a = 6:size(fileList,1) - 2
             img(y(1,:),x(1,:),2) = color(i,2) * 255;
             img(y(1,:),x(1,:),3) = color(i,3) * 255;
         end
-    end 
+    end
     imwrite(img, new_filename);
 end
 
