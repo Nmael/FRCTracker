@@ -31,3 +31,16 @@ Run "imsubtract.m"
 	-Saves centroid information to "centroids.mat"
 	--> Format for each row:
 		<centroid_row> <centroid_col> <frame_number>
+		
+
+		
+To track the robot and output the tracks
+
+Run "tracking.m"
+--> Uses centroids.mat (output of imsubtract.m or svm)
+--> Requires a folder name "filtered_imgs" to be created in the directory
+	- Used for saving images with overlaid centroids
+
+--> Outputs
+	- Images into filtered_imgs folder
+	- A clip of the robots and their tracks (filtered.avi)
