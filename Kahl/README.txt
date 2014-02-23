@@ -20,6 +20,7 @@ Run "imsubtract.m"
 	-Image.m
 -->Uses the following functions:
 	-clean_mask_imsubtract.m
+	-bounding_box.m
 -->Uses images from directory:
 	-"/QF2-1_5160-5240"
 	-Can be changed in the code

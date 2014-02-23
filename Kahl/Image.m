@@ -1,14 +1,11 @@
 classdef Image
-    %IMAGE Summary of this class goes here
-    %   Detailed explanation goes here
+    %IMAGE holder class for an image
+    % Holds an image in its RGB form, as well as extract L and S bands
+    % Always converts images to double format from 0 to 1
     properties
         img
-%         R
-%         G
-%         B
         L
         S
-%         T
     end
     methods
         function this = Image(I)
@@ -24,7 +21,6 @@ classdef Image
             B = this.img(:,:,3);
             this.L = R + G + B;
             this.S = R - B;
-            %this.T = thisR - 2*thisG + thisB;
         end
     end
 end
