@@ -1,18 +1,14 @@
 clear all; close all; clc; imtool close all;
 
-color = zeros(7, 3);
-color(1,:) = [0 1 0];
-color(2,:) = [0 1 1];
-color(3,:) = [0 0 0];
-color(4,:) = [0 0 1];
-color(5,:) = [1 1 0];
-color(6,:) = [1 0 0];
-color(7,:) = [1 0 1];
+%% Intialization
+% Colors for plotting
+color = zeros(7, 3); color(1,:) = [0 1 0]; color(2,:) = [0 1 1];
+color(3,:) = [0 0 0]; color(4,:) = [0 0 1]; color(5,:) = [1 1 0];
+color(6,:) = [1 0 0]; color(7,:) = [1 0 1];
 
-% Track the point that we are extracting from the center of the robot
+% Factors from video itself
 framerate = 30; % fps of video
 N = 81;  % number of frames extracted/to extract
-
 dt = 1/framerate;
 T = dt:dt:N*dt;
 
@@ -33,6 +29,7 @@ XR = zeros(length(T),2); XM = zeros(length(T),2); XK = zeros(length(T),2);
 VK = zeros(length(T),2); RK = zeros(length(T),2);
 XM(2,:) = [0,0]';
 
+%% Tracking
 for i = 3:size(T,2)-2
     current = centroids(times == i, :);
     for start = 1:2
@@ -58,17 +55,8 @@ for i = 3:size(T,2)-2
         predicted_tracks(i, :, start) = xk;
     end
 end
-%
-% figure('units','pixels','Position',[0 0 1024 768]);
-% subplot(2,1,1);
-% plot(T,XM(:,1),T,XK(:,1),T,VK(:,1));
-% xlabel('Time (s)'); title('X Pos, Vel and Acc');
-% legend('Measured','Estimated','Velocity');
-% subplot(2,1,2);
-% plot(T,XM(:,2),T,XK(:,2),T,VK(:,2));
-% xlabel('Time (s)'); title('Y Pos, Vel and Acc');
-% legend('Measured','Estimated','Velocity');
 
+%% Plotting
 % Plot the tracks
 figure();
 hold on;
@@ -79,11 +67,11 @@ legend('Track 1', 'Track2');
 hold off;
 axis([0 640 0 360]);
 
+% Save the overlaid images
 fileList = dir('QF2-1_5160-5240\');
-
 for a = 6:size(fileList,1) - 2
     if a-2<10
-        filename = ['QF2-1_5160-5240\0' num2str(a-2) '.png'];
+        filename = ['QF2-1_5160-5240\' num2str(a-2) '.png'];
     else
         filename = ['QF2-1_5160-5240\' num2str(a-2) '.png'];
     end
@@ -103,8 +91,6 @@ for a = 6:size(fileList,1) - 2
     imwrite(img, new_filename);
 end
 
-% video_maker('original.avi', 'QF2-1_5160-5240',0, size(T,2));
+% Save the overlaid images and play them
 video_maker('filtered.avi', 'filtered_imgs',3, size(T,2)-2);
-
-% implay('original.avi');
 implay('filtered.avi');
