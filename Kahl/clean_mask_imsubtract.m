@@ -3,7 +3,6 @@ function [ cleaned ] = clean_mask_imsubtract( mask )
 %   Detailed explanation goes here
 
 % Max number of pixels to be counted as a region
-% MIN_PIXEL_COUNT = numel(mask)/500;
 MIN_PIXEL_COUNT = 100;
 
 cleaned = mask;

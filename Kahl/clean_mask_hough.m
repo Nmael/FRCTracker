@@ -3,8 +3,7 @@ function [ cleaned ] = clean_mask_hough( mask )
 %   Detailed explanation goes here
 
 % Max number of pixels to be counted as a region
-%MIN_PIXEL_COUNT = numel(mask)/500;
-MIN_PIXEL_COUNT = 10;
+MIN_PIXEL_COUNT = numel(mask)/500;
 
 cleaned = mask;
 labeled_mask = bwlabel(mask);
